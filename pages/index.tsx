@@ -1,3 +1,4 @@
+import { useEffect, useCallback } from "react";
 import { GetServerSideProps } from "next";
 import { Box } from "@mui/material";
 import type { NextPage } from "next";
@@ -24,23 +25,33 @@ interface Props {
 const Home: NextPage<Props> = ({ data }) => {
   const dispatch = useAppDispatch();
 
-  const handleNotification = () => {
-    const payload: INotification = {
-      id: uuid(),
-      title: "Success:",
-      message:
-        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa, iusto quibusdam laboriosam magni at nesciunt quam. Architecto dignissimos numquam, fugiat rem commodi neque enim optio. Ut odit deserunt explicabo tenetur? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa, iusto quibusdam laboriosam magni at nesciunt quam. Architecto dignissimos numquam, fugiat rem commodi neque enim optio. Ut odit deserunt explicabo tenetur?",
-      severity: "error",
-    };
-    dispatch(newNotification(payload));
-  };
+  const handleNotification = useCallback(
+    ({ title, message }: { title: string; message: string }) => {
+      const payload: INotification = {
+        id: uuid(),
+        title,
+        message,
+        severity: "error",
+      };
+      dispatch(newNotification(payload));
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
+    if (!data) {
+      const title = "Error:";
+      const message = "Hubo un error cargando los datos.";
+      handleNotification({ title, message });
+    }
+  }, [data, handleNotification]);
 
   return (
     <>
       <Layout title={"Home - App"}>
         <Box className="index__container">
           <Box className="index__landing">
-            <CTable data={data}></CTable>
+            <CTable data={data || []}></CTable>
           </Box>
           {/* <Box className="index__landing">
             <h1>Hola</h1>
@@ -52,10 +63,10 @@ const Home: NextPage<Props> = ({ data }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { data } = await request.get<DBDataUsers[]>("/data/covid");
+  const { data } = await request.get<DBDataUsers[] | null>("/data/covid");
 
   return {
-    props: { ok: true, data },
+    props: { data },
   };
 };
 

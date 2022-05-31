@@ -18,17 +18,19 @@ const baseUrl =
     : "http://127.0.0.1:5000/";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log("A");
-
   const SETTINGS = {
     method: "GET",
     ContentType: "application/json",
   };
 
-  const response = await axios.get<DBDataUsers[]>(baseUrl, SETTINGS);
-  const { data } = response;
+  try {
+    const response = await axios.get<DBDataUsers[]>(baseUrl, SETTINGS);
+    const { data } = response;
 
-  return res.status(200).json(data);
+    return res.status(200).json(data);
+  } catch (error) {
+    return res.status(200).json(null);
+  }
 };
 
 export default handler;

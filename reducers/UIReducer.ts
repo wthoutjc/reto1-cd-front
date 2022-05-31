@@ -36,6 +36,6 @@ export { uiSlice };
 export const { newNotification, removeNotification } = uiSlice.actions;
 
 // Select to access to the store
-export const selectUI = (state: AppState) => state.auth;
+export const selectUI = (state: AppState) => state.ui;
 
 export default uiSlice.reducer;

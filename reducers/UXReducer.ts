@@ -42,6 +42,6 @@ export { uxSlice };
 export const { incrementClicks, turnOffRender, openSidebar, closeSidebar } = uxSlice.actions;
 
 // Selector to access to the store
-export const selectUX = (state: AppState) => state.auth;
+export const selectUX = (state: AppState) => state.ux;
 
 export default uxSlice.reducer;
