@@ -14,7 +14,7 @@ enum Method {
 
 const baseUrl =
   process.env.NODE_ENV === "production"
-    ? "productionurl"
+    ? "https://reto1-back.herokuapp.com/"
     : "http://127.0.0.1:5000/";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
