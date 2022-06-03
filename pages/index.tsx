@@ -5,6 +5,7 @@ import type { NextPage } from "next";
 
 // Components
 import { Layout } from "../components/layout";
+import { Sidebar } from "../components/ui";
 
 // Redux
 import { useAppDispatch } from "../hooks";
@@ -18,12 +19,16 @@ import { CTable } from "../components/ui/table";
 // Api
 import { request } from "../api";
 
+// Redux
+import { useAppSelector } from "../hooks";
+
 interface Props {
   data: DBDataUsers[];
 }
 
 const Home: NextPage<Props> = ({ data }) => {
   const dispatch = useAppDispatch();
+  const { sidebar } = useAppSelector(state => state.ux);
 
   const handleNotification = useCallback(
     ({ title, message }: { title: string; message: string }) => {
@@ -38,7 +43,7 @@ const Home: NextPage<Props> = ({ data }) => {
     [dispatch]
   );
 
-  useEffect(() => {
+  useEffect(() => {  
     if (!data) {
       const title = "Error:";
       const message = "Hubo un error cargando los datos.";
@@ -49,9 +54,10 @@ const Home: NextPage<Props> = ({ data }) => {
   return (
     <>
       <Layout title={"Home - App"}>
+        {sidebar.open && <Sidebar />}
         <Box className="index__container">
           <Box className="index__landing">
-            <CTable data={data || []}></CTable>
+            {Array.isArray(data) && <CTable data={data || []}></CTable>}
           </Box>
           {/* <Box className="index__landing">
             <h1>Hola</h1>

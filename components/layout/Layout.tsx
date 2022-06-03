@@ -4,9 +4,6 @@ import Head from "next/head";
 // Components
 import { Navbar } from "../ui";
 
-// Redux
-import { useAppDispatch } from "../../hooks";
-
 interface Props {
   title?: string;
   children?: React.ReactNode;

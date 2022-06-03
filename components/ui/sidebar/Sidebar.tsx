@@ -1,94 +1,127 @@
-import { useEffect, useState } from "react";
-import { CSSObject, List, styled, Theme } from "@mui/material";
-import MuiDrawer from "@mui/material/Drawer";
+import { useState } from "react";
+import { 
+  Box, 
+  Card, 
+  CardContent, 
+  Divider, 
+  Drawer,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Typography
+} from "@mui/material";
 
 // Redux
-import { useAppSelector } from "../../../hooks";
+import { useAppSelector, useAppDispatch } from "../../../hooks";
+import { toggleSidebar } from "../../../reducers";
 
 // SideBarData
 import {
   AdminSideBarStore,
-  ClientSideBarStore,
-  EmployeeSideBarStore,
 } from "../../../store";
 
-// Interfaces - Types - Enum
-import { SideBarData } from "../../../interfaces";
-import { Hierarchy } from "../../../enum";
+const drawerWidth = 300;
 
-// Components
-import { SidebarItem } from "./SidebarItem";
+interface Props {
+  window?: () => Window;
+}
 
-const DRAWER_WIDTH = 200;
+export function Sidebar(props: Props) {
+  const [filter, setFilter] = useState('')
 
-const openedMixin = (theme: Theme): CSSObject => ({
-  width: DRAWER_WIDTH,
-  backgroundColor: "#091621",
-  position: "static",
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
-  overflowX: "hidden",
-});
+  const dispatch = useAppDispatch()
 
-const closedMixin = (theme: Theme): CSSObject => ({
-  position: "static",
-  backgroundColor: "#091621",
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  overflowX: "hidden",
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
-  },
-});
+  const { sidebar } = useAppSelector(state => state.ux);
+  const { open } = sidebar;
 
-const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-  width: DRAWER_WIDTH,
-  flexShrink: 0,
-  whiteSpace: "nowrap",
-  boxSizing: "border-box",
-  ...(open && {
-    ...openedMixin(theme),
-    "& .MuiDrawer-paper": openedMixin(theme),
-  }),
-  ...(!open && {
-    ...closedMixin(theme),
-    "& .MuiDrawer-paper": closedMixin(theme),
-  }),
-}));
+  const { window } = props;
 
-const Sidebar = () => {
-  const [data, setData] = useState<SideBarData[]>([]);
+  const handleDrawerToggle = () => {
+    dispatch(toggleSidebar())
+  };
 
-  const { sidebar } = useAppSelector((state) => state.ux);
+  const handleChange = (event: SelectChangeEvent) => {
+    setFilter(event.target.value);
+  };
 
-  useEffect(() => {
-    setData(AdminSideBarStore);
-  }, []);
+  const drawer = (
+    <Box sx={{padding: 1}}>
+      <Typography variant="body1" sx={{padding: '1em'}}> Búsqueda avanzada </Typography>
+      <Divider />
+      <Card sx={{width: '100%', padding: '0.1em', marginTop: 1, marginBottom: 1}} variant="outlined">
+        <CardContent>
+          <Typography sx={{fontSize:14}} color="text.secondary" gutterBottom>
+            Selecciona una opción
+          </Typography>
+          <FormControl size="small">
+            <Select
+                labelId="name-filter"
+                id="name-filter-select"
+                value={filter}
+                displayEmpty
+                onChange={handleChange}
+                inputProps={{ 'aria-label': 'Without label' }}
+              > 
+                <MenuItem value="">
+                  <Typography variant="body1">Seleccione</Typography>
+                </MenuItem>
+                <MenuItem value="edad">
+                  <Typography variant="body1">Edad</Typography>
+                </MenuItem>
+                <MenuItem value="tipo_recuperacion">
+                  <Typography variant="body1">Tipo de recuperación</Typography>
+                </MenuItem>
+                <MenuItem value="estado">
+                  <Typography variant="body1">Estado</Typography>
+                </MenuItem>
+                <MenuItem value="ubicacion">
+                  <Typography variant="body1">Ubicación</Typography>
+                </MenuItem>
+                <MenuItem value="sexo">
+                  <Typography variant="body1">Sexo</Typography>
+                </MenuItem>
+              </Select>
+              <FormHelperText>Opción de filtro: datos COVID-19.</FormHelperText>
+          </FormControl>
+        </CardContent>
+      </Card>
+      <Divider />
+    </Box>
+  );
+
+  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Drawer
-      variant="permanent"
-      open={sidebar.open}
-      className={
-        sidebar.open
-          ? "sidebar__main sidebar__expanded"
-          : "sidebar__main sidebar__compressed"
-      }
-    >
-      <List>
-        {data?.map((item, index) => (
-          <SidebarItem key={index} item={item} open={sidebar.open} />
-        ))}
-      </List>
-    </Drawer>
+    <Box sx={{position: 'absolute', width:'100%', height: '100%', zIndex: 1}} >
+      <Drawer
+        container={container}
+        variant="temporary"
+        open={open}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true, // Better open performance on mobile.
+        }}
+        sx={{
+          display: { xs: 'block', sm: 'none' },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+        }}
+      >
+        {drawer}
+      </Drawer>
+      <Drawer
+        variant="permanent"
+        sx={{
+          display: { xs: 'none', sm: 'block' },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+        }}
+        open
+      >
+        {drawer}
+      </Drawer>
+      <Box className="sidebar__main" onClick={handleDrawerToggle} />
+    </Box>  
   );
-};
-
-export { Sidebar };
+}

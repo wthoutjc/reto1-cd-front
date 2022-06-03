@@ -160,32 +160,32 @@ const CTable = ({ data }: { data: DBDataUsers[] }) => {
                         component="th"
                         id={labelId}
                         scope="row"
-                        padding="none"
+                        align="left"
                       >
                         {row.id_de_caso}
                       </TableCell>
-                      <TableCell align="center">{row.fecha_reporte_web}</TableCell>
-                      <TableCell align="center">{row.fecha_de_notificacion}</TableCell>
-                      <TableCell align="center">{row.departamento}</TableCell>
-                      <TableCell align="center">{row.departamento_nom}</TableCell>
-                      <TableCell align="center">{row.ciudad_municipio}</TableCell>
-                      <TableCell align="center">{row.ciudad_municipio_nom}</TableCell>
-                      <TableCell align="center">{row.edad}</TableCell>
-                      <TableCell align="center">{row.unidad_medida}</TableCell>
-                      <TableCell align="center">{row.sexo}</TableCell>
-                      <TableCell align="center">{row.fuente_tipo_contagio}</TableCell>
-                      <TableCell align="center">{row.ubicacion}</TableCell>
-                      <TableCell align="center">{row.estado}</TableCell>
-                      <TableCell align="center">{row.pais_viajo_1_cod}</TableCell>
-                      <TableCell align="center">{row.pais_viajo_1_nom}</TableCell>
-                      <TableCell align="center">{row.recuperado}</TableCell>
-                      <TableCell align="center">{row.fecha_inicio_sintomas}</TableCell>
-                      <TableCell align="center">{row.fecha_diagnostico}</TableCell>
-                      <TableCell align="center">{row.fecha_recuperado}</TableCell>
-                      <TableCell align="center">{row.tipo_recuperacion}</TableCell>
-                      <TableCell align="center">{row.per_etn_}</TableCell>
-                      <TableCell align="center">{row.fecha_muerte}</TableCell>
-                      <TableCell align="center">{row.nom_grupo_}</TableCell>
+                      <TableCell align="center">{row.fecha_reporte_web || 'No registra'}</TableCell>
+                      <TableCell align="center">{row.fecha_de_notificaci_n || 'No registra'}</TableCell>
+                      <TableCell align="center">{row.departamento || 'No registra'}</TableCell>
+                      <TableCell align="center">{row.departamento_nom || 'No registra'}</TableCell>
+                      <TableCell align="center">{row.ciudad_municipio || 'No registra'}</TableCell>
+                      <TableCell align="center">{row.ciudad_municipio_nom || 'No registra'}</TableCell>
+                      <TableCell align="center">{row.edad || 'No registra'}</TableCell>
+                      <TableCell align="center">{row.unidad_medida || 'No registra'}</TableCell>
+                      <TableCell align="center">{row.sexo || 'No registra'}</TableCell>
+                      <TableCell align="center">{row.fuente_tipo_contagio || 'No registra'}</TableCell>
+                      <TableCell align="center">{row.ubicacion || 'No registra'}</TableCell>
+                      <TableCell align="center">{row.estado || 'No registra'}</TableCell>
+                      <TableCell align="center">{row.pais_viajo_1_cod || 'No registra'}</TableCell>
+                      <TableCell align="center">{row.pais_viajo_1_nom || 'No registra'}</TableCell>
+                      <TableCell align="center">{row.recuperado || 'No registra'}</TableCell>
+                      <TableCell align="center">{row.fecha_inicio_sintomas || 'No registra'}</TableCell>
+                      <TableCell align="center">{row.fecha_diagnostico || 'No registra'}</TableCell>
+                      <TableCell align="center">{row.fecha_recuperado || 'No registra'}</TableCell>
+                      <TableCell align="center">{row.tipo_recuperacion || 'No registra'}</TableCell>
+                      <TableCell align="center">{row.per_etn_ || 'No registra'}</TableCell>
+                      <TableCell align="center">{row.fecha_muerte || 'No registra'}</TableCell>
+                      <TableCell align="center">{row.nom_grupo_ || 'No registra'}</TableCell>
                     </TableRow>
                   );
                 })}
