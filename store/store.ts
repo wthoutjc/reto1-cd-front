@@ -1,11 +1,11 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 
 // Reducers
-import { uxReducer, uiReducer } from "../reducers";
+import { uxReducer, uiReducer, filterReducer } from "../reducers";
 
 export function makeStore() {
   return configureStore({
-    reducer: { ux: uxReducer, ui: uiReducer },
+    reducer: { ux: uxReducer, ui: uiReducer, filter: filterReducer },
   });
 }
 

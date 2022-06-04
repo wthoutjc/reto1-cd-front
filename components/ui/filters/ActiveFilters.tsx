@@ -1,0 +1,38 @@
+import { Box, Chip, Typography } from "@mui/material";
+
+// Redux
+import { useAppDispatch } from "../../../hooks";
+import { resetFilter } from "../../../reducers";
+
+// Cookies
+import Cookies from "js-cookie";
+
+// Interfaces
+import { OptionsFilters } from "../../../interfaces";
+
+const ActiveFilters = ({
+  current,
+  value,
+}: {
+  current: OptionsFilters | null;
+  value: string | number[] | null;
+}) => {
+  const dispatch = useAppDispatch();
+
+  const handleDeleteFilter = () => {
+    dispatch(resetFilter());
+    Cookies.remove("filter_cd_covid_19");
+  };
+
+  return (
+    <Box display={"flex"} alignItems="center" sx={{ width: "100%", p: 1 }}>
+      <Chip
+        label={`${current}: ${value}`}
+        variant="outlined"
+        onDelete={handleDeleteFilter}
+      />
+    </Box>
+  );
+};
+
+export default ActiveFilters;
