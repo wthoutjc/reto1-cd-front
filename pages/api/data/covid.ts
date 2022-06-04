@@ -3,9 +3,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 //db
 import axios from "axios";
 
-// Interfaces
-import { DBDataUsers } from "../../../interfaces";
-
 enum Method {
   post = "POST",
   get = "GET",
@@ -18,16 +15,27 @@ const baseUrl =
     : "http://127.0.0.1:5000/";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const SETTINGS = {
-    method: "GET",
-    ContentType: "application/json",
-  };
-
   try {
-    const response = await axios.get<string>(baseUrl, SETTINGS);
-    const { data } = response;
-    
-    return res.status(200).json(eval(data));
+    switch (req.method) {
+      case Method.get: {
+        const { data } = await axios.get<string>(baseUrl);
+        return res.status(200).json(eval(data));
+      }
+      case Method.post: {
+        const { filter } = req.body;
+        const { current, value } = filter;
+
+        const { data } = await axios.post<string>(baseUrl, {
+          filtro: current,
+          valor: value,
+        });
+
+        return res.status(200).json(eval(data));
+      }
+      default:
+        res.status(404).json({ error: "Method not found" });
+        break;
+    }
   } catch (error) {
     return res.status(200).json(null);
   }

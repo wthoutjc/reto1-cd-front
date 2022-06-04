@@ -6,6 +6,7 @@ import {
   CardContent,
   CardHeader,
 } from "@mui/material";
+import { useRouter } from "next/router";
 
 // Icons
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
@@ -30,13 +31,19 @@ const SearchLayout = ({
   children,
   handleDrawerToggle,
 }: Props) => {
+  const router = useRouter();
+
   const dispatch = useAppDispatch();
   const { option, value } = useAppSelector((state) => state.filter);
 
   const handleSetFilter = () => {
     dispatch(setFilter({ current: option, option, value }));
-    Cookies.set("filter_cd_covid_19", JSON.stringify({ current:option, option, value }));
+    Cookies.set(
+      "filter_cd_covid_19",
+      JSON.stringify({ current: option, option, value })
+    );
     handleDrawerToggle();
+    router.push(`/?${option}=${value}`);
   };
 
   return (

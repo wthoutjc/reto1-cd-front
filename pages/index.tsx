@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 import { GetServerSideProps } from "next";
 import { Box } from "@mui/material";
 import type { NextPage } from "next";
@@ -66,7 +66,7 @@ const Home: NextPage<Props> = ({ data, filter }) => {
     if (filter) {
       dispatch(setFilter(filter));
     }
-  }, [filter, dispatch])
+  }, [filter, dispatch]);
 
   return (
     <>
@@ -74,10 +74,10 @@ const Home: NextPage<Props> = ({ data, filter }) => {
         {sidebar.open && <Sidebar />}
         <Box className="index__container">
           <Box className="index__landing">
-            {current && (
-              <ActiveFilters current={current} value={value} />
+            {current && <ActiveFilters current={current} value={value} />}
+            {Array.isArray(data) && data.length > 0 && (
+              <CTable data={data || []}></CTable>
             )}
-            {Array.isArray(data) && <CTable data={data || []}></CTable>}
           </Box>
           {/* <Box className="index__landing">
             <h1>Hola</h1>
@@ -89,14 +89,16 @@ const Home: NextPage<Props> = ({ data, filter }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { filter_cd_covid_19 = "{}" } = req.cookies;
-  const filter = JSON.parse(filter_cd_covid_19);
+  const { filter_cd_covid_19 } = req.cookies;
+  const filter = filter_cd_covid_19 ? JSON.parse(filter_cd_covid_19) : null;
 
-  const { data } = await request.get<DBDataUsers[] | null>("/data/covid");
+  const { data } = filter
+    ? await request.post<string>(`/data/covid`, { filter })
+    : await request.get<string>(`/data/covid`);
 
   return {
     props: {
-      data,
+      data: eval(data),
       filter,
     },
   };
