@@ -9,10 +9,7 @@ enum Method {
   put = "PUT",
 }
 
-const baseUrl =
-  process.env.NODE_ENV === "production"
-    ? "https://reto1-back.herokuapp.com/"
-    : "http://127.0.0.1:5000/";
+const baseUrl = process.env.BACK_URL!;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -37,7 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         break;
     }
   } catch (error) {
-    return res.status(200).json(null);
+    return res.status(404).json(error);
   }
 };
 
