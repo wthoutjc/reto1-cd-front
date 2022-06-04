@@ -8,24 +8,24 @@ const initialState: IUx = {
   clicks: 0,
   sidebar: {
     open: false,
-  }
+  },
 };
 
 const uxSlice = createSlice({
   name: "[UX]",
   initialState,
   reducers: {
-    incrementClicks: (state) => {
+    incrementClicks: (state: IUx) => {
       state.clicks += 1;
     },
-    turnOffRender: (state) => {
+    turnOffRender: (state: IUx) => {
       state.clicks = 0;
     },
-    toggleSidebar: (state) => {
+    toggleSidebar: (state: IUx) => {
       state.sidebar = {
         ...state.sidebar,
         open: !state.sidebar.open,
-      }
+      };
     },
   },
 });
@@ -33,7 +33,8 @@ const uxSlice = createSlice({
 export { uxSlice };
 
 // Actions
-export const { incrementClicks, turnOffRender, toggleSidebar } = uxSlice.actions;
+export const { incrementClicks, turnOffRender, toggleSidebar } =
+  uxSlice.actions;
 
 // Selector to access to the store
 export const selectUX = (state: AppState) => state.ux;
