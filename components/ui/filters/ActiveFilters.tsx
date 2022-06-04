@@ -1,4 +1,5 @@
-import { Box, Chip, Typography } from "@mui/material";
+import { Box, Chip } from "@mui/material";
+import { useRouter } from "next/router";
 
 // Redux
 import { useAppDispatch } from "../../../hooks";
@@ -17,11 +18,13 @@ const ActiveFilters = ({
   current: OptionsFilters | null;
   value: string | number[] | null;
 }) => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
 
   const handleDeleteFilter = () => {
     dispatch(resetFilter());
     Cookies.remove("filter_cd_covid_19");
+    router.push('/')
   };
 
   return (
